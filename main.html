@@ -4,3 +4,17 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
 	<script src="main.js"></script>
 </head>
+<body ng-controller="controller">
+
+	<div>
+		<textarea ng-model="text" placeholder="Enter your quote here"></textarea>
+		<input ng-model="author" type="text" placeholder="Author">
+		<button ng-click="submitQuote()">Submit</button>
+	</div>
+
+	<div class="quotes" ng-repeat="quote in quoteList | filter : byAuthor | orderBy: 'score'">
+		<p>{{quote.text}}<br>{{quote.author}}</p>
+	</div>
+
+</body>
+</html>
