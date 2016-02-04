@@ -2,19 +2,23 @@ var Quotr = angular.module('Quotr', [])
 
 Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 
-	// Quote - textarea, required
-	// Author - input type="text"
-	// submit ng-click=submitQuote
+	$scope.quoteList 	= facto.preloads
+	
+	// var locStorage = window.localStorage
+	// locStorage.setItem('quoteList', facto.preloads)
 
-	$scope.quoteList = facto.preloads
+	// console.log(facto.preloads)
+	// console.log(locStorage.quoteList)
 
-	$scope.textError   = false
-	$scope.authorError = false
+	$scope.textError 	= false
+	$scope.authorError 	= false
+
+	$scope.undoQueue 	= []
 
 	$scope.authorFilter = ''
 
-	$scope.showPopUp = false
-	$scope.rando = ''
+	$scope.showPopUp 	= false
+	$scope.rando 		= ''
 
 	$scope.submitQuote = function() {
 		$scope.verifyQuotes()
@@ -26,25 +30,30 @@ Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 	}
 
 	$scope.verifyQuotes = function() {
-		if ($scope.text) 	{ $scope.textError   = false }
-		else 				{ $scope.textError   = true  }
-		if ($scope.author) 	{ $scope.authorError = false }
-		else 				{ $scope.authorError = true  }
+		$scope.textError 	= Boolean(!$scope.text)
+		$scope.authorError 	= Boolean(!$scope.author)
 	}
 
 	$scope.deleteQuote = function(quote) {
 		var index = $scope.quoteList.indexOf(quote)
-		$scope.quoteList.splice(index, 1)
+		$scope.undoQueue.push($scope.quoteList.splice(index, 1)[0])
+		console.log($scope.undoQueue)
+	}
+
+	$scope.undoDelete = function() {
+		$scope.quoteList.push($scope.undoQueue.pop())
 	}
 
 	$scope.rateQuote = function(quote, rating) {
 		quote.rate(rating)
 	}
 // Fun ways to display
-	$scope.authorFilter = ''
-
 	$scope.updateFilter = function(author) {
-		$scope.authorFilter = author
+		if ($scope.authorFilter) {
+			$scope.authorFilter = ''
+		} else {
+			$scope.authorFilter = author
+		}
 	}
 
 	$scope.randomQuote = function() {
@@ -64,7 +73,7 @@ Quotr.factory('facto', function() {
 	var Quote = function(text, author) {
 		this.text    = text
 		this.author  = author
-		this.score 	 = undefined
+		this.score 	 = ' '
 		this.ratings = []
 	}
 
@@ -77,20 +86,40 @@ Quotr.factory('facto', function() {
 			var total = this.ratings.reduce(function(a,b) {
 				return a + b
 			})
-			this.score = total / this.ratings.length
+			this.score = (total / this.ratings.length).toFixed(1)
 		}
 	}
 
 	var preloads = []
-	preloads.push(new Quote('Everything should be made as simple as possible, but not simpler.', 'Albert Einstein'))
+	preloads.push(new Quote(
+		'Everything should be made as simple as possible, but not simpler.', 
+		'Albert Einstein'
+	))
 
-	preloads.push(new Quote('Style is whatever you want to do, if you can do it with confidence.', 'George Clinton'))
+	preloads.push(new Quote(
+		'Style is whatever you want to do, if you can do it with confidence.', 
+		'George Clinton'
+	))
 
-	preloads.push(new Quote('Free your mind and your ass will follow.', 'George Clinton'))
+	preloads.push(new Quote(
+		'Free your mind and your ass will follow.', 
+		'George Clinton'
+	))
 
-	preloads.push(new Quote('We are guided by interests rather than feelings in dealing with our partners.', 'Vladimir Putin'))
+	preloads.push(new Quote(
+		'We are guided by interests rather than feelings in dealing with our partners.', 
+		'Vladimir Putin'
+	))
 
-	preloads.push(new Quote('My name is Sparkles!', 'Sparkles'))
+	preloads.push(new Quote(
+		'My name is Sparkles!', 
+		'Sparkles'
+	))
+
+	preloads.push(new Quote(
+		'Suck a fart, bro!',
+		'Jacob Duvall'
+	))
 
 
 	return {

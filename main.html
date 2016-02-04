@@ -8,16 +8,24 @@
 
 	<div>
 		<textarea ng-model="text" placeholder="Enter your quote here"></textarea>
+		<span ng-show="textError">Please enter a quote.</span><br>
 		<input ng-model="author" type="text" placeholder="Author">
+		<span ng-show="authorError">Please enter an author.</span>
 		<button ng-click="submitQuote()">Submit</button>
 	</div>
 
-	<div class="quotes" ng-repeat="quote in quoteList | filter : byAuthor | orderBy: 'score'">
-		<p>{{quote.text}}<br>-{{quote.author}}</p>
-		<!-- rating, ng-repeat ratings array, ng-click -->
-		<!-- error messages -->
-		<!-- deleted -->
+	<div class="quotes" ng-repeat="quote in quoteList | filter : authorFilter | orderBy: '-score'">
+		<p>
+			{{quote.text}}
+			<br>
+			<span ng-click="updateFilter(quote.author)">-{{quote.author}}</span>
+			<br>
+			Score: {{quote.score}}
+			Rate: <span ng-repeat="rating in [1,2,3,4,5]" ng-click="rateQuote(quote, rating)"> {{rating}} </span>
+			<button ng-click="deleteQuote(quote)" style="float: right">Delete Quote</button>
+		</p>
 	</div>
+	<button ng-click="undoDelete()" ng-show="undoQueue.length">Undo Delete</button>
 
 </body>
 </html>
