@@ -8,7 +8,7 @@ Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 
 	$scope.quoteList = facto.preloads
 
-	$scope.textError = false
+	$scope.textError   = false
 	$scope.authorError = false
 
 	$scope.authorFilter = ''
@@ -21,14 +21,14 @@ Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 		if ($scope.textError || $scope.authorError) { return; }
 		var quote = new facto.Quote($scope.text, $scope.author)
 		$scope.quoteList.push(quote)
-		$scope.text = ''
+		$scope.text   = ''
 		$scope.author = ''
 	}
 
 	$scope.verifyQuotes = function() {
-		if ($scope.text.length > 1) 	{ $scope.textError   = false }
+		if ($scope.text) 	{ $scope.textError   = false }
 		else 				{ $scope.textError   = true  }
-		if ($scope.author.length > 1) 	{ $scope.authorError = false }
+		if ($scope.author) 	{ $scope.authorError = false }
 		else 				{ $scope.authorError = true  }
 	}
 
@@ -48,12 +48,10 @@ Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 	}
 
 	$scope.randomQuote = function() {
-		var index = Math.floor(Math.random() * $scope.quoteList.length)
-		$scope.rando = $scope.quoteList[index]
+		var index        = Math.floor(Math.random() * $scope.quoteList.length)
+		$scope.rando     = $scope.quoteList[index]
 		$scope.showPopUp = true
 	}
-
-
 
 	$scope.hideRandomQuote = function() {
 		$scope.showPopUp = false
@@ -64,9 +62,9 @@ Quotr.controller('controller', ['$scope', 'facto', function($scope, facto) {
 Quotr.factory('facto', function() {
 
 	var Quote = function(text, author) {
-		this.text = text
-		this.author = author
-		this.score = undefined
+		this.text    = text
+		this.author  = author
+		this.score 	 = undefined
 		this.ratings = []
 	}
 
@@ -90,15 +88,13 @@ Quotr.factory('facto', function() {
 
 	preloads.push(new Quote('Free your mind and your ass will follow.', 'George Clinton'))
 
-	preloads.push(new Quote('Sometimes we get so caught up in language, and \'this\' word and \'that\' word, that we lose site of the bigger problems in the world. At one time, the word \'Bitch\' simply meant female dog. Now, it has a negative meaning. Many negative words in one time and/or culture are meaningless in another. We\'ve got to stop wasting time fighting over nonsense. I\'m still waiting for aliens to come.', 'George Clinton'))
-
 	preloads.push(new Quote('We are guided by interests rather than feelings in dealing with our partners.', 'Vladimir Putin'))
 
 	preloads.push(new Quote('My name is Sparkles!', 'Sparkles'))
 
 
 	return {
-		Quote : Quote,
+		Quote    : Quote,
 		preloads : preloads
 	}
 

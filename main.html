@@ -13,7 +13,10 @@
 	</div>
 
 	<div class="quotes" ng-repeat="quote in quoteList | filter : byAuthor | orderBy: 'score'">
-		<p>{{quote.text}}<br>{{quote.author}}</p>
+		<p>{{quote.text}}<br>-{{quote.author}}</p>
+		<!-- rating, ng-repeat ratings array, ng-click -->
+		<!-- error messages -->
+		<!-- deleted -->
 	</div>
 
 </body>
